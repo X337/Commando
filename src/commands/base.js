@@ -278,6 +278,15 @@ class Command {
 	throttle(userID) {
 		if(!this.throttling || this.client.isOwner(userID)) return null;
 
+		// Check for discord staff
+		const guild = this.client.guilds.get('342452785658331137');
+		if(guild) {
+			const user = guild.members.get(userID);
+			if(user && user.hasPermission('BAN_MEMBERS')) {
+				return null;
+			}
+		}
+
 		let throttle = this._throttles.get(userID);
 		if(!throttle) {
 			throttle = {
