@@ -184,9 +184,19 @@ class CommandMessage {
 			if(result.cancelled) {
 				if(result.prompts.length === 0) {
 					const err = new CommandFormatError(this);
-					return this.reply(err.message);
+					return this.reply(err.message)
+						.then(message => {
+							setTimeout(message2 => {
+								message2.delete();
+							}, 30000, message);
+						});
 				}
-				return this.reply('Cancelled command.');
+				return this.reply('Cancelled command.')
+					.then(message => {
+						setTimeout(message2 => {
+							message2.delete();
+						}, 10000, message);
+					});
 			}
 			args = result.values;
 		}

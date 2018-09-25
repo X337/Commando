@@ -184,7 +184,13 @@ class Argument {
 					Respond with \`cancel\` to cancel the command.
 					${wait ? `The command will automatically be cancelled in ${this.wait} seconds.` : ''}
 				`}
-			`));
+			`)
+				.then(message => {
+					setTimeout(message2 => {
+						message2.delete();
+					}, 30000, message);
+				})
+			);
 
 			// Get the user's response
 			const responses = await msg.channel.awaitMessages(msg2 => msg2.author.id === msg.author.id, {
@@ -273,7 +279,13 @@ class Argument {
 							Respond with \`cancel\` to cancel the command, or \`finish\` to finish entry up to this point.
 							${wait ? `The command will automatically be cancelled in ${this.wait} seconds.` : ''}
 						`}
-					`));
+					`)
+						.then(message => {
+							setTimeout(message2 => {
+								message2.delete();
+							}, 30000, message);
+						})
+					);
 				} else if(results.length === 0) {
 					prompts.push(await msg.reply(stripIndents`
 						${this.prompt}
@@ -281,7 +293,13 @@ class Argument {
 							Respond with \`cancel\` to cancel the command, or \`finish\` to finish entry.
 							${wait ? `The command will automatically be cancelled in ${this.wait} seconds, unless you respond.` : ''}
 						`}
-					`));
+					`)
+						.then(message => {
+							setTimeout(message2 => {
+								message2.delete();
+							}, 30000, message);
+						})
+					);
 				}
 
 				// Get the user's response
