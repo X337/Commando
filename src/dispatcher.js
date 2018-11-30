@@ -121,11 +121,21 @@ class CommandDispatcher {
 
 			if(!inhibited) {
 				if(cmdMsg.command) {
-					if(!cmdMsg.command.isEnabledIn(message.guild)) {
-						responses = await cmdMsg.reply(`The \`${cmdMsg.command.name}\` command is disabled.`);
-					} else if(!oldMessage || typeof oldCmdMsg !== 'undefined') {
-						responses = await cmdMsg.run();
-						if(typeof responses === 'undefined') responses = null; // eslint-disable-line max-depth
+					const offDutyRole = [
+						'516599287790960661',
+						'516599852310986754',
+						'516603247491022849',
+						'516598081123385344'
+					];
+					if (cmdMsg.command.groupID == 'punishments' && message.member.roles.filter(r => offDutyRole.indexOf(r.id) !== -1).size > 0) {
+						responses = await cmdMsg.reply(`You can't use \`${cmdMsg.command.name}\` command whilst off duty.`);
+					} else {
+						if (!cmdMsg.command.isEnabledIn(message.guild)) {
+							responses = await cmdMsg.reply(`The \`${cmdMsg.command.name}\` command is disabled.`);
+						} else if (!oldMessage || typeof oldCmdMsg !== 'undefined') {
+							responses = await cmdMsg.run();
+							if (typeof responses === 'undefined') responses = null; // eslint-disable-line max-depth
+						}
 					}
 				} else {
 					/**
