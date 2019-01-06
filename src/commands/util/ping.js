@@ -15,6 +15,11 @@ module.exports = class PingCommand extends Command {
 		});
 	}
 
+	hasPermission(msg) {
+		if(!msg.member.hasPermission('KICK_MEMBERS')) return 'You are not allowed to use this command.';
+		return true;
+	}
+
 	async run(msg) {
 		if(!msg.editable) {
 			const pingMsg = await msg.reply('Pinging...');
